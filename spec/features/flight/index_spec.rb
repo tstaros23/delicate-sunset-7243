@@ -57,7 +57,7 @@ RSpec.describe 'index page' do
     PassengerFlight.create!(passenger_id: passenger_2.id, flight_id: flight.id)
 
     flight_2 = Flight.create!(number: 2, date: '4/30/93', departure_city: 'denver', arrival_city: 'chicago', airline_id: airline.id)
-    passenger_3 = Passenger.create!(name: 'Ted', age: 28)
+    passenger_3 = Passenger.create!(name: 'Dave', age: 28)
     passenger_4 = Passenger.create!(name: 'Bob', age: 22)
 
     PassengerFlight.create!(passenger_id: passenger_3.id, flight_id: flight_2.id)
@@ -65,11 +65,12 @@ RSpec.describe 'index page' do
 
     visit '/flights'
 
-    expect(page).to have_link("Remove #{passenger.name}")
-    expect(page).to have_content(passenger.name)
-    click_on ("Remove #{passneger.name}")
 
-    expect(page).not_to have_content(passenger.name)
+    expect(page).to have_content('Ted')
+    click_on ("Remove #{passenger.name}")
+
     expect(current_path).to eq('/flights')
+    expect(page).not_to have_content(passenger.name)
+
   end
 end
