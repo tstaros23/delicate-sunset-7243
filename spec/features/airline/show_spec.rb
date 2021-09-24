@@ -1,11 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Airline do
-  describe 'relationships' do
-    it { should have_many(:flights) }
-    it {should have_many(:passengers).through(:passenger_flights)}
-    end
-
+RSpec.describe 'show page' do
     it "has a list of the flight numbers, the airline associated with that flight and the names of the flight's passenger" do
       airline = Airline.create!(name: 'UniTED')
       flight = Flight.create!(number: 1, date: '4/30/93', departure_city: 'chicago', arrival_city: 'denver', airline_id: airline.id)
@@ -16,8 +11,9 @@ RSpec.describe Airline do
       PassengerFlight.create!(passenger_id: passenger_2.id, flight_id: flight.id)
       PassengerFlight.create!(passenger_id: passenger_3.id, flight_id: flight.id)
 
+      visit "/airlines/#{airline.id}"
 
-
-      expect(airline.unique_adult_passengers).to eq([passenger_2, passenger_3])
-    end
+      expect(page).to have_content(passenger_2.name)
+      expect(page).to have_content(passenger_3.name)
+  end
 end
